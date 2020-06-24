@@ -12,7 +12,7 @@ from amuse.lab import *
 from amuse.couple import bridge
 from amuse.support import io
 
-from galpy.potential import MWPotential2014, to_amuse
+from galpy.potential import MWPotential2014, KuzminKutuzovStaeckelPotential, to_amuse
 from galpy.util import bovy_conversion
 
 from gravity_code import gravity_code_setup
@@ -49,8 +49,8 @@ def simulation(code_name, orbiter_name, potential, Mgalaxy, Rgalaxy, sepBinary,
     simulation_bodies, gravity, orbiter_bodies_list, cluster_colors, stellar = gravity_code_setup(code_name, orbiter_name, Mgalaxy, Rgalaxy, galaxy_code, sepBinary, 
                                                                                                   rvals, phivals, zvals, vrvals, vphivals, vzvals, masses, radii, Norbiters)
 
-    #channel_from_gravity_to_framework = gravity.particles.new_channel_to(simulation_bodies)
-    #channel_from_framework_to_gravity = simulation_bodies.new_channel_to(gravity.particles)
+    channel_from_gravity_to_framework = gravity.particles.new_channel_to(simulation_bodies)
+    channel_from_framework_to_gravity = simulation_bodies.new_channel_to(gravity.particles)
     
     channel_from_stellar_to_framework = stellar.particles.new_channel_to(simulation_bodies)
     
@@ -123,31 +123,6 @@ def simulation(code_name, orbiter_name, potential, Mgalaxy, Rgalaxy, sepBinary,
             
             masses = data_t['mass'].tolist()
             mass_data[j_like_index, :len(data_t.index)] = masses #in solar masses
-            
-            '''
-            data_t = data_t.drop(columns=['mass']) #goes from 7D --> 6D
-            data_t = data_t.astype(float) #strings to floats
-    
-            all_data[j_like_index, :len(data_t.index), :] = data_t.values
-            np.savetxt('enbid_%s_frame_%s_Norbiters_%s.ascii'%(code_name, str(j).rjust(5, '0'), str(Norbiters)), data_t.values)
-
-            x, y = data_t['x'].tolist(), data_t['y'].tolist()
-            
-            #stuff to analyze COM of each star cluster
-            for k, number_of_stars in enumerate(cluster_populations_sorted):
-                
-                starting_index = int(np.sum( cluster_populations_sorted[:k] ))
-                ending_index = starting_index + int(number_of_stars)
-                
-                cluster_masses = body_masses[starting_index:ending_index]
-                cluster_total_mass = cluster_masses.sum()
-            
-                x_COM = np.sum( [ body_masses[i]*x[i]/cluster_total_mass for i in range(starting_index, ending_index) ] ) #in kpc
-                y_COM = np.sum( [ body_masses[i]*y[i]/cluster_total_mass for i in range(starting_index, ending_index) ] ) #in kpc
-            
-                COM_data[j_like_index, k, 0] = x_COM
-                COM_data[j_like_index, k, 1] = y_COM
-            '''
         
             j_like_index += 1 
             
@@ -155,9 +130,9 @@ def simulation(code_name, orbiter_name, potential, Mgalaxy, Rgalaxy, sepBinary,
         stellar.evolve_model(t)
         channel_from_stellar_to_framework.copy()
         
-        #channel_from_framework_to_gravity.copy()
-        #gravity.evolve_model(t)
-        #channel_from_gravity_to_framework.copy()
+        channel_from_framework_to_gravity.copy()
+        gravity.evolve_model(t)
+        channel_from_gravity_to_framework.copy()
 
   
     np.savetxt(code_name + '_' + orbiter_name + '_masses_Norbiters_' + str(Norbiters) + '_dt_' + str(dt.value_in(units.Myr)) + '.txt', mass_data)

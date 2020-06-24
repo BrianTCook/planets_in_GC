@@ -29,11 +29,9 @@ from amuse.ic.kroupa import new_kroupa_mass_distribution
 from amuse.community.mercury.interface import Mercury
 
 from galpy.df import quasiisothermaldf
-from galpy.potential import MWPotential2014
+from galpy.potential import MWPotential2014, KuzminKutuzovStaeckelPotential
 from galpy.util import bovy_conversion
 from galpy.actionAngle import actionAngleStaeckel
-
-from cluster_table import sort_clusters_by_attribute
 
 import numpy as np
 np.random.seed(73)

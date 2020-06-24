@@ -11,7 +11,7 @@ from amuse.lab import *
 from amuse.couple import bridge
 
 from galpy.df import quasiisothermaldf
-from galpy.potential import MWPotential2014, to_amuse
+from galpy.potential import MWPotential2014, KuzminKutuzovStaeckelPotential, to_amuse
 from galpy.util import bovy_conversion
 from galpy.actionAngle import actionAngleStaeckel
 
