@@ -40,7 +40,7 @@ def simulation():
     
     gravity = bridge.Bridge(use_threading=False)
     
-    gravity_Hercules = Brutus()
+    gravity_Hercules = Hermite()
     gravity_Hercules.particles.add_particles(Hercules)
     
     potential = KuzminKutuzovStaeckelPotential
