@@ -24,7 +24,7 @@ import math
 
 def simulation():
     
-        Hercules = Particles(1)
+    Hercules = Particles(1)
     Hercules.mass = 6e5 | units.MSun
     
     RA, DEC = 250.422, 36.460 #degrees
