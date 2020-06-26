@@ -64,44 +64,29 @@ def simulation(code_name, orbiter_name, potential, Mgalaxy, Rgalaxy, sepBinary,
     delta_energies, clock_times = [], []
     
     body_masses = gravity.particles.mass
-    
+
     '''
-    if orbiter_name == 'SingleStar':
-            cluster_populations = [1 for i in range(Norbiters) ]
-    '''
-    
-    if orbiter_name == 'SingleCluster':
-        
-            #cluster_populations = np.loadtxt('/home/s1780638/second_project_gcs/data/Nstars_in_clusters.txt')
-            cluster_populations = np.loadtxt('/home/brian/Desktop/second_project_gcs/data/Nstars_in_clusters.txt')
-        
-            #need to give clusters sorted by an attribute, in our case increasing |r|
-            #new_index = indices_dict[old_index]
-            indices_dict = sort_clusters_by_attribute('|r|')
-            
-            cluster_populations_sorted = [ cluster_populations[indices_dict[i]]
-                                           for i in range(Norbiters) ]
-    
     #for 3D numpy array storage
     Nsavetimes = 50
     all_data = np.zeros((Nsavetimes+1, Ntotal, 6))
     mass_data = np.zeros((Nsavetimes+1, Ntotal))    
-    #COM_data = np.zeros((len(sim_times), Norbiters, 2))
+    '''
 
     #for saving in write_set_to_file
     filename = 'data_temp.csv'
     attributes = ('mass', 'x', 'y', 'z', 'vx', 'vy', 'vz')
     
     print('len(sim_times) is', len(sim_times))
-    gadget_flag = int(math.floor(len(sim_times)/Nsavetimes))
+    #gadget_flag = int(math.floor(len(sim_times)/Nsavetimes))
     
     t0 = time.time()
-    j_like_index = 0
+    #j_like_index = 0
     
     for j, t in enumerate(sim_times):
 
         clock_times.append(time.time()-t0) #will be in seconds
     
+        '''
         if j == 0:
             E_dyn_init = gravity.kinetic_energy + gravity.potential_energy
             
@@ -125,7 +110,14 @@ def simulation(code_name, orbiter_name, potential, Mgalaxy, Rgalaxy, sepBinary,
             mass_data[j_like_index, :len(data_t.index)] = masses #in solar masses
         
             j_like_index += 1 
+        '''   
+        
+        io.write_set_to_file(gravity.particles, filename, 'csv',
+                             attribute_types = (units.MSun, units.kpc, units.kpc, units.kpc, units.kms, units.kms, units.kms),
+                             attribute_names = attributes)
             
+        data_t = pd.read_csv(filename, names=list(attributes))
+        
     
         stellar.evolve_model(t)
         channel_from_stellar_to_framework.copy()

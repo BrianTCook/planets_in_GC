@@ -33,23 +33,6 @@ def gravity_code_setup(code_name, orbiter_name, Mgalaxy, Rgalaxy, galaxy_code, s
     converter_parent = nbody_system.nbody_to_si(Mgalaxy, Rgalaxy)
     converter_sub = nbody_system.nbody_to_si(np.median(masses)|units.MSun, np.median(radii)|units.parsec) #masses list is in solar mass units
     
-    list_of_orbiters = [ orbiter(code_name, orbiter_name, Mgalaxy, Rgalaxy, sepBinary,
-                                     rvals, phivals, zvals, vrvals, vphivals, vzvals, masses, i) for i in range(Norbiters) ]
-    
-    orbiter_bodies_list = [ list_of_orbiters[i][0] for i in range(Norbiters) ] 
-    orbiter_codes_list = [ list_of_orbiters[i][1] for i in range(Norbiters) ]
-    
-    print(len(list_of_orbiters))
-    
-    cluster_colors = []
-    
-    for i, orbiter_code in enumerate(orbiter_codes_list):   
-
-        stars = orbiter_code.particles.copy()
-        cluster_color = np.random.rand(3,)
-        
-        cluster_colors.append([cluster_color]*len(stars))
-
     channel = stars.new_channel_to(orbiter_code.particles)
     channel.copy_attributes(['mass', 'x','y','z','vx','vy','vz'])
 
@@ -57,7 +40,6 @@ def gravity_code_setup(code_name, orbiter_name, Mgalaxy, Rgalaxy, galaxy_code, s
     stellar.particles.add_particles(cluster_code.particles)
 
     #bridges each cluster with the bulge, not the other way around though
-    gravity.add_system(cluster_code, other_things)  
-    
+    gravity.add_system(cluster_code, other_things)      
 
     return gravity.particles, gravity, orbiter_bodies_list, cluster_colors, stellar

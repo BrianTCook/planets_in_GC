@@ -130,7 +130,7 @@ def globularCluster(code_name, orbiter_name, Mgalaxy, Rgalaxy, sepBinary,
     index_sorted = indices_dict[index]
     
     #data_directory = '/home/s1780638/second_project_gcs/data/'
-    data_directory = '/home/brian/Desktop/second_project_gcs/data/'
+    data_directory = '/home/brian/Desktop/planets_in_GC/data/'
     star_masses = np.loadtxt(data_directory+'star_masses/star_masses_index=%s.txt'%(str(index_sorted)))
     radius = np.loadtxt(data_directory+'/ICs/cluster_radii_for_sampling.txt')[index_sorted]
     
