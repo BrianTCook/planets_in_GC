@@ -24,11 +24,7 @@ import math
 
 def simulation():
     
-    return 0
-
-if __name__ in '__main__':
-    
-    Hercules = Particles(1)
+        Hercules = Particles(1)
     Hercules.mass = 6e5 | units.MSun
     
     RA, DEC = 250.422, 36.460 #degrees
@@ -92,5 +88,11 @@ if __name__ in '__main__':
         gravity.evolve_model(t)
         
     gravity.stop()
+
+    return 0
+
+if __name__ in '__main__':
+    
+    simulation()
     
     print('hello world!')
